@@ -6,7 +6,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=25)
     email = serializers.EmailField(max_length=70)
     phone_number = PhoneNumberField(allow_null=False, allow_blank=False) # to not be an empty field
-    password = serializers.CharField(min_length=10, write_only=True)
+    password = serializers.CharField(min_length=8, write_only=True)
     
     class Meta:
         model = User
