@@ -1,4 +1,5 @@
 
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
@@ -10,16 +11,33 @@ from drf_yasg import openapi
 
 ...
 
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Pizza Delivery API",
-      default_version='v1',
-      description="Pizza Delivery service",
-      contact=openapi.Contact(email="admin@app.com"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
+
+if settings.DEBUG:
+    schema_view = get_schema_view(
+            openapi.Info(
+               title="Pizza Delivery API",
+               description="Pizza Delivery service",
+               default_version="1.0",
+               contact=openapi.Contact(email="admin@app.com"),
+               license=openapi.License(name="BSD License"),
+            ),
+            public=True,
+            permission_classes=(permissions.AllowAny,),
+        )
+else:
+    schema_view = get_schema_view(
+        openapi.Info(
+            title="Global plug",
+            description="A travel agency",
+            default_version="1.0",
+            terms_of_service="https://www.google.com/policies/terms/",
+            contact=openapi.Contact(email="contact@snippets.local"),
+            license=openapi.License(name="BSD License"),
+        ),
+        public=True,
+        permission_classes=(permissions.AllowAny,),
+        url="https://web-pizza-delivery.up.railway.app/swagger/"
+    )
 
 urlpatterns = [
    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
